@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
       name: Chechout Code
-    - uses: docker/build-push-action@v1.1.0
+    - uses: docker/build-push-action@v1.1.2
       name: Build Container
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
