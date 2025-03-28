@@ -1,13 +1,8 @@
-FROM alpine:3.12
+FROM alpine@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1
 
-LABEL maintainer="nico.meisenzahl@whiteduck.de" \
-org.label-schema.vcs-url="https://github.com/whiteducksoftware/az-dns-forwarder"
+COPY named.conf /etc/bind/
 
-ADD named.conf /etc/bind/
-
-RUN apk add --no-cache bind && \
-    rm -rf /var/cache/apk/*
-
+RUN apk add --update-cache --no-cache bind
 EXPOSE 53/udp
 
 ENTRYPOINT ["/usr/sbin/named", "-f", "-g"]
