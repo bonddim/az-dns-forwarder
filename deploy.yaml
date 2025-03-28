@@ -1,51 +1,81 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
-    app: az-dns-forwarder
+    app.kubernetes.io/instance: az-dns-forwarder
+    app.kubernetes.io/name: az-dns-forwarder
   name: az-dns-forwarder
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: az-dns-forwarder
+      app.kubernetes.io/instance: az-dns-forwarder
+      app.kubernetes.io/name: az-dns-forwarder
   strategy:
     type: RollingUpdate
     rollingUpdate:
-        maxSurge: 25%
-        maxUnavailable: 25%
+      maxSurge: 25%
+      maxUnavailable: 25%
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: az-dns-forwarder
+        app.kubernetes.io/instance: az-dns-forwarder
+        app.kubernetes.io/name: az-dns-forwarder
     spec:
+      automountServiceAccountToken: false
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/instance
+                      operator: In
+                      values:
+                        - az-dns-forwarder
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       containers:
-        - image: ghcr.io/whiteducksoftware/az-dns-forwarder/az-dns-forwarder:latest
-          name: bind
+        - image: ghcr.io/bonddim/az-dns-forwarder:latest
+          name: az-dns-forwarder
           ports:
-          - containerPort: 53
-            protocol: UDP
-          resources: {}
-status: {}
+            - containerPort: 53
+              protocol: UDP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+              ephemeral-storage: 50Mi
+            requests:
+              cpu: 5m
+              memory: 32Mi
+              ephemeral-storage: 50Mi
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
-  labels:
-    app: az-dns-forwarder
-  name: az-dns-forwarder
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  labels:
+    app.kubernetes.io/instance: az-dns-forwarder
+    app.kubernetes.io/name: az-dns-forwarder
+  name: az-dns-forwarder
 spec:
   ports:
-  - port: 53
-    protocol: UDP
-    targetPort: 53
+    - name: dns
+      port: 53
+      protocol: UDP
+      targetPort: 53
   selector:
-    app: az-dns-forwarder
+    app.kubernetes.io/instance: az-dns-forwarder
+    app.kubernetes.io/name: az-dns-forwarder
   type: LoadBalancer
-status:
-  loadBalancer: {}
