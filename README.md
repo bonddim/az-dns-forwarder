@@ -1,8 +1,14 @@
 # Containerized Azure DNS Forwarder
 
-> This project is inspired by the [DNS Forwarder VM](https://github.com/Azure/azure-quickstart-templates/tree/master/301-dns-forwarder/). It provides a similar experience for a containerized environment.
+[![Docker](https://github.com/bonddim/az-dns-forwarder/actions/workflows/docker.yml/badge.svg)](https://github.com/bonddim/az-dns-forwarder/actions/workflows/docker.yml)
+[![Docker Image Size](https://img.shields.io/docker/image-size/bonddim/az-dns-forwarder?logo=docker)](https://hub.docker.com/r/bonddim/az-dns-forwarder)
+[![Docker Pulls](https://img.shields.io/docker/pulls/bonddim/az-dns-forwarder?logo=docker&label=pulls)](https://hub.docker.com/r/bonddim/az-dns-forwarder)
+[![GitHub License](https://img.shields.io/github/license/bonddim/az-dns-forwarder)](https://github.com/bonddim/az-dns-forwarder?tab=MIT-1-ov-file)
 
-This project provides a containerized DNS server that forwards queries to Azure's internal DNS servers so that hostnames in the virtual network can be resolved from outside the network. This is helpful, for example, when you need to resolve Private Link enabled resources from your on-premises networks connected via Side-to-Side VPN or ExpressRoute.
+> [!IMPORTANT]
+> This project is not an official Microsoft product. It is a community-driven solution to provide DNS forwarding capabilities for Azure Private Link enabled resources.
+
+This project is inspired by the [DNS Forwarder VM](https://learn.microsoft.com/en-us/samples/azure/azure-quickstart-templates/dns-forwarder/) provides a containerized DNS server that forwards queries to Azure's internal DNS servers so that hostnames in the virtual network can be resolved from outside the network. This is helpful, for example, when you need to resolve Private Link enabled resources from your on-premises networks connected via Side-to-Side VPN or ExpressRoute.
 
 This Container can be deployed and exposed internally with Azure Kubernetes Service as well as Azure Container Instances.
 
@@ -11,6 +17,11 @@ This Container can be deployed and exposed internally with Azure Kubernetes Serv
 ## Get started
 
 Below you find get started guides for AKS as well as ACI.
+
+Image is available on [Docker Hub](https://hub.docker.com/r/bonddim/az-dns-forwarder) and [GitHub Container Registry](https://github.com/bonddim/az-dns-forwarder/pkgs/container/az-dns-forwarder):
+
+- `docker.io/bonddim/az-dns-forwarder:latest`
+- `ghcr.io/bonddim/az-dns-forwarder:latest`
 
 ### Azure Kubernetes Service
 
@@ -42,3 +53,6 @@ az container create \
   --port 53 \
   --protocol UDP
 ```
+
+> [!NOTE]
+> This is a fork of abandoned [whiteducksoftware/az-dns-forwarder](https://github.com/whiteducksoftware/az-dns-forwarder) see [issue](https://github.com/whiteducksoftware/az-dns-forwarder/issues/3).
