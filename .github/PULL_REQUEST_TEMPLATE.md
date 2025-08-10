@@ -1,4 +1,5 @@
 ## Describe your Pull Request
+
 A clear and concise description of what the Pull Request is about.
 
 Fixes # (issue)
@@ -15,5 +16,3 @@ Please select relevant options:
 - [ ] I have made corresponding changes to the documentation
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] I have checked my code and corrected any misspellings
-
-Reviewer: @nmeisenzahl 
