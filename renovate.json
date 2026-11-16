@@ -3,7 +3,9 @@
   "extends": ["config:best-practices"],
   "automerge": true,
   "automergeStrategy": "squash",
-  "dependencyDashboard": false,
+  "dependencyDashboard": {
+    "enabled": false
+  },
   "enabledManagers": ["dockerfile", "github-actions"],
   "packageRules": [
     {
